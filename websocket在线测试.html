@@ -19,24 +19,22 @@ button {
 
 </head>
 <body>
-    <div class="page-header">
+   <!--  <div class="page-header">
         <h1 style="margin-top:-20px;margin-left:20px;"> test</h1>
         
-    </div>
+    </div> -->
     <div>
         <div class="zone_conn">
-            <input type="text" class="form-control" style="float:left;" id="inp_url" value="ws://118.25.40.163:8088" placeholder="连接的地址">
+            <input type="text" class="form-control" style="float:left;" id="inp_url" value="ws://localhost:3000" placeholder="连接的地址">
             <button type="button" id="btn_conn" class="btn btn-primary" style="float:left;margin-left:10px;margin-right:10px;" onclick="fun_initWebSocket();">连接</button>
             <button type="button" id="btn_close" class="btn btn-danger" style="float:left;" disabled="disabled" onclick="fun_close();">断开</button>
         </div>
         <div class="clearboth">
             1、连接格式为 ws://IP/域名:端口（示例ws://118.25.40.163:8088）<br>
-            2、对于<span style="color:red">内网</span>的测试环境，只需填入服务端的<span style="color:red">内网IP</span>和端口<br>
-            3、可连接我上面提供的服务端ws地址来测试您<span style="color:red">自己的客户端</span>
         </div>
         <div class="zone_send">
-            <a id="emoji" style="position:relative;left:374px;bottom:5px;cursor:pointer;" data-toggle="popover" title="" data-original-title="表情"><img style="outline-width:40px;" src="./websocket在线测试_files/huanglianwx_thumb.gif">表情</a>
-            <textarea id="inp_send" class="form-control" style="height:100px;" placeholder="发送的内容"></textarea>
+            <!-- <a id="emoji" style="position:relative;left:374px;bottom:5px;cursor:pointer;" data-toggle="popover" title="" data-original-title="表情"><img style="outline-width:40px;" src="./websocket在线测试_files/huanglianwx_thumb.gif">表情</a> -->
+            <textarea id="inp_send" class="form-control" style="height:50px;" placeholder="发送的内容"></textarea>
             <br>
             <button type="button" id="btn_send" class="btn btn-info" onclick="fun_sendto();">发送（ctrl+回车）</button>
         </div>
@@ -44,16 +42,16 @@ button {
             <table align="center" style="table-layout:fixed; width:100%;">     
                 <tr >  
                   <td align = "center" >
-                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(1);">发送</button>
+                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(1000);">心跳</button>
                   </td> 
                   <td align = "center">
-                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(2);">发送</button>
+                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(1001);">login</button>
                   </td> 
                   <td align = "center" >
-                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(3);">发送</button>
+                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(999);">创建</button>
                   </td> 
                   <td align = "center">
-                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(4);">发送</button>
+                    <button type="button" id="" class="btn btn-info" onclick="fun_cmd_sendto(1010);">加入</button>
                   </td>
                 </tr>  
           </table>  
@@ -61,7 +59,7 @@ button {
 
 
     </div>
-    <div style="position:absolute;top:100px;left:470px;">
+    <div style="position:absolute;top:20px;left:470px;">
         <div id="div_msgzone" class="panel panel-default">
             <div class="panel-heading">消息窗口</div>
             <div id="div_msg" class="panel-body" style="width: 865px; height: 754px;"></div>
@@ -77,25 +75,52 @@ button {
     return fn.toString().split('\n').slice(1,-1).join('\n') + '\n'}
 
 var msg_array = {}
-msg_array["1"] =heredoc(function(){/*
-    hello
-    world
-    */}); 
-msg_array["2"] =heredoc(function(){/*
-    hello
-    world 2
-    */}); 
-msg_array["3"] =heredoc(function(){/*
-    hello
-    world3
-    */}); 
-msg_array["4"] =heredoc(function(){/*
-    hello
-    world4
-    */}); 
+ 
+ //heartbeat
+// msg_array["1000"] ={
+//     cmd:1000,
+//     data:{
+//         msg:0
+//     }
+// }
+msg_array["1000"] =heredoc(function(){/*
+    {
+        "cmd": 1000,
+        "data": {
+            "username": "lisi"
+        }
+    }
+*/}); 
+
+//1001 loginnging  
+msg_array["1001"] =heredoc(function(){/*
+    {
+        "cmd": 1001,
+        "data": {
+            "username": "lisi"
+        }
+    }
+*/}); 
+msg_array["999"] =heredoc(function(){/*
+    {
+        "cmd": 999,
+        "data": {
+            "uid": 2
+        }
+    }   
+ */}); 
+msg_array["1010"] =heredoc(function(){/*
+    {
+        "cmd": 1010,
+        "data": {
+            "uid": 2,
+    "roomid":6261235
+        }
+    }
+*/}); 
 
 function fun_cmd_sendto(cmd){
-$("#inp_send").val(msg_array[cmd]); 
+$("#inp_send").val((msg_array[cmd])); 
 $("#btn_send").trigger("click")
 }
 </script>
